@@ -3,6 +3,9 @@ import http from 'http';
 
 import mongoose from 'mongoose';
 
+import cors from 'cors';
+import helmet from 'helmet';
+
 import Logging from './libraries/logging';
 
 import config from './config';
@@ -25,6 +28,12 @@ const StartServer = () => {
    * Logg the Request and the Response
    */
   app.use(requestInfo);
+
+  app.use(express.urlencoded({ extended: true }));
+  app.use(express.json());
+
+  app.use(cors());
+  app.use(helmet());
 
   http
     .createServer(app)
