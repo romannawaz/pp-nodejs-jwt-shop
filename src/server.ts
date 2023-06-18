@@ -12,6 +12,8 @@ import config from '@config';
 
 import requestInfo from '@middlewares/request-info.middleware';
 
+import { AppRouter } from './app.routes';
+
 const app = express();
 
 mongoose.connect(config.db.url).then(() => {
@@ -34,6 +36,8 @@ const StartServer = () => {
 
   app.use(cors());
   app.use(helmet());
+
+  app.use('/api', AppRouter);
 
   http
     .createServer(app)
