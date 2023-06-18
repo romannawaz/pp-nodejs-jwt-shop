@@ -6,11 +6,11 @@ import mongoose from 'mongoose';
 import cors from 'cors';
 import helmet from 'helmet';
 
-import Logging from './libraries/logging';
+import Logging from '@libraries/logging';
 
-import config from './config';
+import config from '@config';
 
-import requestInfo from './middlewares/request-info.middleware';
+import requestInfo from '@middlewares/request-info.middleware';
 
 const app = express();
 
