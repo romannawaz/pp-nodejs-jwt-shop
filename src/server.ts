@@ -7,6 +7,8 @@ import Logging from './libraries/logging';
 
 import config from './config';
 
+import requestInfo from './middlewares/request-info.middleware';
+
 const app = express();
 
 mongoose.connect(config.db.url).then(() => {
@@ -19,6 +21,11 @@ mongoose.connect(config.db.url).then(() => {
  * Start when DB is connected
  */
 const StartServer = () => {
+  /**
+   * Logg the Request and the Response
+   */
+  app.use(requestInfo);
+
   http
     .createServer(app)
     .listen(config.server.port, () =>
