@@ -1,11 +1,11 @@
 import { Router } from 'express';
 
-import { userRouter } from './routes/user.routes';
+import { authRouter } from './routes/auth.routes';
 import { tokenRouter } from './routes/token.routes';
 
 const router = Router();
 
-router.use('/users', userRouter);
+router.use('/auth', authRouter);
 router.use('/tokens', tokenRouter);
 
 export { router as AppRouter };
