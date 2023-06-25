@@ -1,14 +1,15 @@
 import { Request, Response } from 'express';
-import UserModel from '@models/users.model';
-import UserToken, { TokenPayload } from '@models/token.model';
-
-import config from '@config';
 
 import { sign } from 'jsonwebtoken';
 import { compare } from 'bcrypt';
 
+import config from '@config';
+
 import { encryptPassword } from '../utils/encrypt-password.util';
 import { generateTokens } from '../utils/tokens.util';
+
+import UserModel from '@models/users.model';
+import UserToken, { TokenPayload } from '@models/token.model';
 
 const login = async (req: Request, res: Response) => {
   try {
