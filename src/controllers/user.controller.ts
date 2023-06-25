@@ -17,8 +17,7 @@ const register = async (req: Request, res: Response) => {
     if (isUserExist)
       return res.status(409).send({ message: 'User already exist.' });
 
-    const salt = await genSalt(Number(config.token.salt));
-    const encryptedPassword = await hash(password, salt);
+    const encryptedPassword = encryptPassword(password);
 
     const user = await UserModel.create({
       name,
