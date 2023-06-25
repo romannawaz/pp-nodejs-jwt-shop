@@ -39,6 +39,6 @@ const refreshToken = async (req: Request, res: Response) => {
   });
 };
 
-export const TokenController = {
+export default {
   refreshToken,
 };

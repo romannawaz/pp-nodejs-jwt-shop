@@ -1,9 +1,9 @@
 import { Router } from 'express';
 
-import { TokenController } from '../controllers/token.controller';
+import tokenController from '../controllers/token.controller';
 
 const router = Router();
 
-router.post('/refresh', TokenController.refreshToken);
+router.post('/refresh', tokenController.refreshToken);
 
 export { router as tokenRouter };
