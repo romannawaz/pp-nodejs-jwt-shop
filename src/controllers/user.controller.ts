@@ -1,11 +1,53 @@
 import { Request, Response } from 'express';
 import UserModel from '@models/users.model';
-import UserToken from '@models/token.model';
+import UserToken, { TokenPayload } from '@models/token.model';
 
 import config from '@config';
 
-import { genSalt, hash } from 'bcrypt';
 import { sign } from 'jsonwebtoken';
+import { compare } from 'bcrypt';
+
+import { encryptPassword } from '../utils/encrypt-password.util';
+import { generateTokens } from '../utils/tokens.util';
+
+const login = async (req: Request, res: Response) => {
+  try {
+    const { email, password } = req.body;
+    if (!email || !password)
+      return res.status(400).send({ message: 'All fields are required!' });
+
+    const isUserExist = await UserModel.findOne({
+      email,
+    });
+    if (!isUserExist)
+      return res
+        .status(404)
+        .send({ message: 'User with this email does not exist!' });
+
+    const comparedPassword = await compare(password, isUserExist.password!);
+
+    if (!comparedPassword)
+      return res
+        .status(404)
+        .send({ message: 'Your login details are incorrect' });
+
+    const tokenPayload: TokenPayload = {
+      user_id: isUserExist._id.toString(),
+      email: isUserExist.email!,
+    };
+
+    const tokens = generateTokens(tokenPayload);
+
+    await UserToken.findOneAndUpdate(
+      { userId: isUserExist._id },
+      { refreshToken: tokens.refreshToken },
+    );
+
+    return res.status(200).send(tokens);
+  } catch (error) {
+    return res.status(500).send({ error });
+  }
+};
 
 const register = async (req: Request, res: Response) => {
   try {
@@ -55,5 +97,6 @@ const register = async (req: Request, res: Response) => {
 };
 
 export default {
+  login,
   register,
 };
